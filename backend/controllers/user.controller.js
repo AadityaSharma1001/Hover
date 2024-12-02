@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import BlacklistToken from "../models/blacklistToken.model.js";
 import { validationResult } from "express-validator";
 
 export const register = async (req, res) => {
@@ -49,6 +50,25 @@ export const login = async (req, res) => {
 
         const token = user.generateAuthToken();
         res.status(200).json({user, token});
+    } catch (error) {
+        res.status(400).send(error);
+    }
+}
+
+export const getProfile = async (req, res) => {
+    try {
+        res.status(200).json(req.user);
+    } catch (error) {
+        res.status(400)
+    }
+}
+
+export const logout = async (req, res) => {
+    try {
+        const token = req.header("Authorization").replace("Bearer ", "");
+        const blacklistToken = new BlacklistToken({ token });
+        await blacklistToken.save();
+        res.status(200).send("Logout successfully");
     } catch (error) {
         res.status(400).send(error);
     }

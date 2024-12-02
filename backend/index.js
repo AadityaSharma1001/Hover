@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './db/db.js';
 import userRoutes from './routes/user.routes.js';
+import captainRoutes from './routes/captain.routes.js';
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ connectDB();
 const port = process.env.PORT || 3000;
 
 app.use('/users', userRoutes);
+app.use('/captains', captainRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World');

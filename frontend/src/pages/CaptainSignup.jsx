@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import hover_black from './hover-black.png'
 import { Link } from 'react-router-dom'
+import { CaptainDataContext } from '../context/CaptainContext'
 
 const CaptainSignup = () => {
 
@@ -9,6 +10,8 @@ const CaptainSignup = () => {
   const [firstname,setFirstName] =useState("");
   const [lastname,setLastName] =useState("");
   const [userData,setUserData] =useState({});
+
+  const {captain , setCaptain} = useContext(CaptainDataContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,7 +68,7 @@ const CaptainSignup = () => {
           />
           <button
           className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg placeholder:text-base">
-            Login
+            Join Fleet
           </button>
           <p className="text-center">Already have a account? <Link to='/captain-login' className="text-blue-600">Login here</Link></p>
         </form>

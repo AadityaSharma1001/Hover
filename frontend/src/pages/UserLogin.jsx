@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import hover_black from "./hover-black.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserDataContext } from '../context/UserContext.jsx';
+import axios from "axios";
 
 const UserLogin = () => {
   const [email,setEmail] =useState("");
   const [password,setPassword] =useState("");
-  const [userData,setUserData] =useState({});
+  // const [userData,setUserData] =useState({});
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const { user, setUser } = React.useContext(UserDataContext);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setUserData({email:email,password:password});
+    const userData = {
+      email: email,
+      password: password
+    }
+
+    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData);
+
+    if(res.status === 200){
+      const data = res.data;
+      setUser(data.user);
+      localStorage.setItem('token', data.token);
+      navigate('/home')
+    }
     setEmail("");
     setPassword(""); 
   };

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import hover_black from './hover-black.png'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { UserDataContext } from '../context/UserContext.jsx';
 
 const UserSignup = () => {
   
@@ -9,11 +10,31 @@ const UserSignup = () => {
   const [password,setPassword] =useState("");
   const [firstname,setFirstName] =useState("");
   const [lastname,setLastName] =useState("");
-  const [userData,setUserData] =useState({});
+  // const [userData,setUserData] =useState({});
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const { user, setUser } = React.useContext(UserDataContext);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setUserData({fullname:{firstname:firstname, lastname:lastname},email:email,password:password});
+    const newUser = {
+      fullname:{
+        firstname:firstname, 
+        lastname:lastname
+      },
+      email:email,
+      password:password
+    }
+  
+    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+
+    if(res.status === 201){
+      const data = res.data;
+      setUser(data.user);
+      localStorage.setItem('token', data.token);
+      navigate('/home');
+    }
     setFirstName("");
     setLastName("");
     setEmail("");
@@ -66,7 +87,7 @@ const UserSignup = () => {
           />
           <button
           className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg placeholder:text-base">
-            Login
+            Create Account
           </button>
           <p className="text-center">Already have a account? <Link to='/login' className="text-blue-600">Login here</Link></p>
         </form>
@@ -78,6 +99,6 @@ const UserSignup = () => {
       </div>
     </div>
   )
-}
+};
 
 export default UserSignup

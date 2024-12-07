@@ -50,33 +50,33 @@ const captain = new mongoose.Schema({
             required: true,
             minlenght: [3, 'Plate must be at least 3 characters long']
         },
-        platePhoto: {
-            type: String,
-            required: true
-        },
-        ownerPhoto: {
-            type: String,
-            required: true
-        },
+        // platePhoto: {
+        //     type: String,
+        //     required: true
+        // },
+        // ownerPhoto: {
+        //     type: String,
+        //     required: true
+        // },
         capacity: {
             type: Number,
             required: true,
             min: [1, 'Capacity must be at least 1']
         },
-        type: {
+        vechicleType: {
             type: String,
             required: true,
-            enum: ['car', 'motorcycle','auto rickshaw']
+            enum: ['car', 'moto','auto']
         }
     },
     location: {
         lat: {
             type: Number,
-            required: true
+            required: false
         },
         lng: {
             type: Number,
-            required: true
+            required: false
         }
     }
 });

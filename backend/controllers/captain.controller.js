@@ -11,7 +11,7 @@ export const register = async (req, res) => {
             return res.status(400).send({ error: errors.array() });
         }
 
-        const { fullname, email, password, vechicle, location } = req.body;
+        const { fullname, email, password, vechicle } = req.body;
 
         const captainExist = await Captain.findOne({ email });
         if (captainExist) {
@@ -21,17 +21,17 @@ export const register = async (req, res) => {
             return res.status(400).send({ error: 'Full name must include first name and last name' });
         }
 
-        if (!vechicle || !vechicle.color || !vechicle.plate || !vechicle.platePhoto || !vechicle.ownerPhoto || !vechicle.capacity) {
+        if (!vechicle || !vechicle.color || !vechicle.plate || !vechicle.capacity || !vechicle.vechicleType) {
             return res.status(400).send({ error: 'Vechicle must include color, plate, plate photo, owner photo and capacity' });
         }
 
-        if (!location || !location.lng || !location.lat) {
-            return res.status(400).send({ error: 'Location must include latitudes and longitudes' });
-        }
+        // if (!location || !location.lng || !location.lat) {
+        //     return res.status(400).send({ error: 'Location must include latitudes and longitudes' });
+        // }
 
         const hashedPassword = await Captain.hashPassword(password);
 
-        const captain = new Captain({ fullname, email, password: hashedPassword, vechicle, location });
+        const captain = new Captain({ fullname, email, password: hashedPassword, vechicle/*, location*/ });
         await captain.save();
         const token = captain.generateAuthToken();
         res.status(201).json({ captain, token });

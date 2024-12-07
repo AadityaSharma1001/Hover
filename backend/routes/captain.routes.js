@@ -12,11 +12,10 @@ router.post('/register', [
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     body('vechicle.color').isLength({ min: 3 }).withMessage('Color must be at least 3 characters long'),
     body('vechicle.plate').isLength({ min: 3 }).withMessage('Plate must be at least 3 characters long'),
-    body('vechicle.platePhoto').isURL().withMessage('Plate photo must be a valid URL'),
-    body('vechicle.ownerPhoto').isURL().withMessage('Owner photo must be a valid URL'),
     body('vechicle.capacity').isInt({ min: 1 }).withMessage('Capacity must be at least 1'),
-    body('location.lng').isNumeric().withMessage('Longitude must be a number'),
-    body('location.lat').isNumeric().withMessage('Latitude must be a number')
+    body('vechicle.vechicleType').isIn(['car', 'auto', 'moto']).withMessage('Vechicle type must be car, motorcycle or bicycle')
+    // body('location.lng').isNumeric().withMessage('Longitude must be a number'),
+    // body('location.lat').isNumeric().withMessage('Latitude must be a number')
     ], register);
 
 router.post('/login', [
